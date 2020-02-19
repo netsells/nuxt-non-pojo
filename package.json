@@ -2,7 +2,7 @@
   "name": "@netsells/nuxt-non-pojo",
   "version": "1.0.0",
   "description": "A way to use non-POJO class instances in NuxtJS",
-  "main": "dist/index.js",
+  "main": "dist/module.js",
   "scripts": {
     "lint": "eslint src --max-warnings=0",
     "build": "babel src -d dist"
