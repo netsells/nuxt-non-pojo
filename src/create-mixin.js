@@ -27,7 +27,7 @@ function createMixin({ constructors, namespace }) {
 
                     this.$store.commit(`${ namespace }/save`, {
                         ...identity,
-                        json: instance.toJSON(),
+                        pojo: instance.toPOJO(),
                     });
 
                     return identity;

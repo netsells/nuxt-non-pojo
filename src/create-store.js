@@ -9,10 +9,10 @@ function createStore({ constructors }) {
         },
 
         mutations: {
-            save(state, { name, key, json }) {
+            save(state, { name, key, pojo }) {
                 state.instances = [
                     ...state.instances.filter(i => i.name !== name || i.key !== key),
-                    { name, key, json },
+                    { name, key, pojo },
                 ];
             },
         },
@@ -22,7 +22,7 @@ function createStore({ constructors }) {
                 return ({ name, key }) => {
                     const saved = state.instances.find(i => i.name === name && i.key === key);
 
-                    return saved && constructors[name].fromJSON(saved.json);
+                    return saved && constructors[name].fromPOJO(saved.pojo);
                 };
             },
         },

@@ -21,14 +21,14 @@ const NuxtNonPojo = {
                 logger.fatal('Passed value is not a class or function');
             }
 
-            for (const funcName of ['toJSON', 'toKey']) {
+            for (const funcName of ['toPOJO', 'toKey']) {
                 if (typeof Klass.prototype[funcName] !== 'function') {
                     logger.fatal(`Passed class does not implement the "${ funcName }" instance method`);
                 }
             }
 
-            if (typeof Klass.fromJSON !== 'function') {
-                logger.fatal(`Passed class does not implement the "fromJSON" static method`);
+            if (typeof Klass.fromPOJO !== 'function') {
+                logger.fatal(`Passed class does not implement the "fromPOJO" static method`);
             }
 
             constructors[Klass.name] = Klass;
