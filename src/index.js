@@ -3,6 +3,11 @@ import createMixin from './create-mixin';
 import logger from './logger';
 
 const NuxtNonPojo = {
+    /**
+     * Install the plugin
+     * @param {Object} Vue
+     * @param {Object} options
+     */
     install(Vue, {
         store,
         namespace = 'nuxt-non-pojo',
@@ -19,6 +24,7 @@ const NuxtNonPojo = {
         for (const Klass of classes) {
             if (typeof Klass !== 'function') {
                 logger.fatal('Passed value is not a class or function');
+                continue;
             }
 
             for (const funcName of ['toPOJO', 'toKey']) {
@@ -28,7 +34,7 @@ const NuxtNonPojo = {
             }
 
             if (typeof Klass.fromPOJO !== 'function') {
-                logger.fatal(`Passed class does not implement the "fromPOJO" static method`);
+                logger.fatal('Passed class does not implement the "fromPOJO" static method');
             }
 
             constructors[Klass.name] = Klass;
@@ -37,7 +43,7 @@ const NuxtNonPojo = {
         store.registerModule(namespace, createStore({ constructors }));
 
         Vue.mixin(createMixin({ constructors, namespace }));
-    }
-}
+    },
+};
 
 export default NuxtNonPojo;

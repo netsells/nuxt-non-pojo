@@ -1,9 +1,21 @@
-import logger from './logger';
-
+/**
+ * Create the mixin
+ * @param {Object} options
+ * @returns {Object}
+ */
 function createMixin({ constructors, namespace }) {
     return {
         computed: {
+            /**
+             * Get NNP property
+             * @returns {Function}
+             */
             $nnp() {
+                /**
+                 * Get an NNP instance
+                 * @param {Object} identity
+                 * @returns {any}
+                 */
                 const get = (identity) => {
                     const instantiate = this.$store.getters[`${ namespace }/instantiate`];
 
@@ -12,13 +24,13 @@ function createMixin({ constructors, namespace }) {
 
                 get.save = (instance) => {
                     if (typeof instance !== 'object') {
-                        logger.fatal('Passed value is not a class instance');
+                        throw new Error('Passed value is not a class instance');
                     }
 
                     const { name } = instance.constructor;
 
                     if (!Object.keys(constructors).includes(name)) {
-                        logger.fatal(`Passed values class has not been registered: "${ name }"`);
+                        throw new Error(`Passed values class has not been registered: "${ name }"`);
                     }
 
                     const key = instance.toKey();
