@@ -2,13 +2,19 @@
   "name": "@netsells/nuxt-non-pojo",
   "version": "1.0.0",
   "description": "A way to use non-POJO class instances in NuxtJS",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "babel src -d dist"
   },
   "author": "Sam Boylett <sam.boylett@netsells.co.uk>",
   "license": "ISC",
   "dependencies": {
     "consola": "^2.11.3"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.8.4",
+    "@babel/node": "^7.8.4",
+    "@babel/preset-env": "^7.8.4"
   }
 }
