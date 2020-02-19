@@ -1,6 +1,6 @@
 import logger from './logger';
 
-function createMixin(namespace) {
+function createMixin({ constructors, namespace }) {
     return {
         computed: {
             $nnp() {

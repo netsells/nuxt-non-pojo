@@ -10,11 +10,33 @@ const NuxtNonPojo = {
     } = {}) {
         if (!store) {
             logger.fatal('Enable vuex store by creating `store/index.js`.');
+
+            return;
         }
 
-        store.registerModule(namespace, createStore(classes));
+        const constructors = {};
 
-        Vue.mixin(createMixin(namespace));
+        for (const Klass of classes) {
+            if (typeof Klass !== 'function') {
+                logger.fatal('Passed value is not a class or function');
+            }
+
+            for (const funcName of ['toJSON', 'toKey']) {
+                if (typeof Klass.prototype[funcName] !== 'function') {
+                    logger.fatal(`Passed class does not implement the "${ funcName }" instance method`);
+                }
+            }
+
+            if (typeof Klass.fromJSON !== 'function') {
+                logger.fatal(`Passed class does not implement the "fromJSON" static method`);
+            }
+
+            constructors[Klass.name] = Klass;
+        }
+
+        store.registerModule(namespace, createStore({ constructors }));
+
+        Vue.mixin(createMixin({ constructors, namespace }));
     }
 }
 
