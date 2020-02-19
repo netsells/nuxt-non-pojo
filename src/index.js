@@ -61,7 +61,7 @@ const NuxtNonPojo = {
                 return nnp({
                     constructors,
                     namespace,
-                    store: app.store,
+                    store: this.store,
                 });
             },
         });
