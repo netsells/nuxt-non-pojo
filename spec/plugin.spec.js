@@ -1,7 +1,11 @@
-import { createLocalVue } from '@vue/test-utils'
+import { createLocalVue, mount } from '@vue/test-utils'
 import Vuex from 'vuex';
 
 import plugin from '../src/plugin';
+
+const TestBase = {
+    template: '<div />',
+};
 
 class Base {
     constructor() {
@@ -57,6 +61,20 @@ describe('plugin', () => {
 
         it('adds $nnp to the app context', () => {
             expect(app.$nnp).toEqual(expect.any(Function));
+        });
+
+        describe('in a component', () => {
+            let wrapper;
+
+            beforeEach(() => {
+                wrapper = mount(TestBase, {
+                    localVue,
+                });
+            });
+
+            it('adds the $nnp mixin', () => {
+                expect(wrapper.vm.$nnp).toEqual(expect.any(Function));
+            });
         });
     });
 });
