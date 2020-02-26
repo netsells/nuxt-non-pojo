@@ -1,6 +1,7 @@
 import { createLocalVue, mount } from '@vue/test-utils'
 import Vuex from 'vuex';
 
+import logger from '../src/logger';
 import plugin from '../src/plugin';
 
 const TestBase = {
@@ -32,28 +33,106 @@ class Bar extends Base {}
 class Broken {}
 
 describe('plugin', () => {
+    let localVue;
+    let app;
+    let store;
+
+    beforeEach(() => {
+        localVue = createLocalVue();
+        localVue.use(Vuex);
+
+        store = new Vuex.Store();
+        app = new class {
+            constructor() {
+                this.store = store;
+            }
+        };
+    });
+
     it('exports a Vue plugin', () => {
         expect(plugin).toEqual(expect.objectContaining({
             install: expect.any(Function),
         }));
     });
 
-    describe('when installed', () => {
-        let localVue;
-        let store;
-        let app;
+    describe('errors', () => {
+        let fatal;
 
         beforeEach(() => {
-            localVue = createLocalVue();
-            localVue.use(Vuex);
+            fatal = jest.fn();
+            logger.mockTypes((typeName) => typeName === 'fatal' && fatal);
+        });
 
-            store = new Vuex.Store();
-            app = new class {
-                constructor() {
-                    this.store = store;
-                }
-            };
+        it('errors if no store passed', () => {
+            localVue.use(plugin);
 
+            expect(fatal).toHaveBeenCalledWith('You must pass in the Vuex store');
+        });
+
+        it('errors if no app passed', () => {
+            localVue.use(plugin, {
+                store,
+            });
+
+            expect(fatal).toHaveBeenCalledWith('You must pass in the NuxtJS app variable');
+        });
+
+        it('errors if class passed is not a function', () => {
+            localVue.use(plugin, {
+                store,
+                app,
+                classes: [
+                    {},
+                ],
+            });
+
+            expect(fatal).toHaveBeenCalledWith('Passed value is not a class or function');
+        });
+
+        it('errors if class does not implement toPOJO', () => {
+            localVue.use(plugin, {
+                store,
+                app,
+                classes: [
+                    class {},
+                ],
+            });
+
+            expect(fatal).toHaveBeenCalledWith('Passed class does not implement the "toPOJO" instance method');
+        });
+
+        it('errors if class does not implement toKey', () => {
+            localVue.use(plugin, {
+                store,
+                app,
+                classes: [
+                    class {
+                        toPOJO() {}
+                    },
+                ],
+            });
+
+            expect(fatal).toHaveBeenCalledWith('Passed class does not implement the "toKey" instance method');
+        });
+
+        it('errors if class does not implement fromPOJO', () => {
+            localVue.use(plugin, {
+                store,
+                app,
+                classes: [
+                    class {
+                        toPOJO() {}
+                        toKey() {}
+                    },
+                ],
+            });
+
+            expect(fatal).toHaveBeenCalledWith('Passed class does not implement the "fromPOJO" static method');
+        });
+    });
+
+    describe('when installed', () => {
+        beforeEach(() => {
             localVue.use(plugin, {
                 store,
                 app,
