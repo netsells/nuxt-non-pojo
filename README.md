@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.com/netsells/nuxt-non-pojo.svg?branch=master)](https://travis-ci.com/netsells/nuxt-non-pojo)
 [![codecov](https://codecov.io/gh/netsells/nuxt-non-pojo/branch/master/graph/badge.svg)](https://codecov.io/gh/netsells/nuxt-non-pojo)
+[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fnetsells%2Fnuxt-non-pojo%2Fmaster)](https://dashboard.stryker-mutator.io/reports/github.com/netsells/nuxt-non-pojo/master)
 
 # Nuxt Non-POJO
 
