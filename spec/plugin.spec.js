@@ -225,6 +225,19 @@ describe('plugin', () => {
                     });
                 });
 
+                it('will overwrite older versions of itself', () => {
+                    const first = new Foo({ id: 5, foo: 'foo' });
+                    const second = new Foo({ id: 5, bar: 'bar' });
+                    const firstId = app.$nnp.save(first);
+                    const secondId = app.$nnp.save(second);
+
+                    expect(firstId).toEqual(secondId);
+
+                    const final = app.$nnp(firstId);
+                    expect(final).not.toEqual(first);
+                    expect(final).toEqual(second);
+                });
+
                 describe('when objects saved', () => {
                     let objects;
                     let pojos;
