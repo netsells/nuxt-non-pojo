@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.com/netsells/nuxt-non-pojo.svg?branch=master)](https://travis-ci.com/netsells/nuxt-non-pojo)
 [![codecov](https://codecov.io/gh/netsells/nuxt-non-pojo/branch/master/graph/badge.svg)](https://codecov.io/gh/netsells/nuxt-non-pojo)
 
 # Nuxt Non-POJO
