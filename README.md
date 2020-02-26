@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/gh/netsells/nuxt-non-pojo/branch/master/graph/badge.svg)](https://codecov.io/gh/netsells/nuxt-non-pojo)
+
 # Nuxt Non-POJO
 
 Use non-POJO objects in NuxtJS with server side rendering.
