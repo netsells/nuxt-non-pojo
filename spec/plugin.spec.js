@@ -161,6 +161,10 @@ describe('plugin', () => {
             expect(fatal).not.toHaveBeenCalled();
         });
 
+        it('registers a Vuex module', () => {
+            expect(store.state['nuxt-non-pojo'].instances).toEqual([]);
+        });
+
         describe('in a component', () => {
             let wrapper;
 
