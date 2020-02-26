@@ -141,6 +141,19 @@ describe('plugin', () => {
         });
     });
 
+    describe('when installed without classes', () => {
+        beforeEach(() => {
+            localVue.use(plugin, {
+                store,
+                app,
+            });
+        });
+
+        it('does not error', () => {
+            expect(fatal).not.toHaveBeenCalled();
+        });
+    });
+
     describe('when installed', () => {
         beforeEach(() => {
             localVue.use(plugin, {
