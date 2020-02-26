@@ -36,8 +36,12 @@ describe('plugin', () => {
     let localVue;
     let app;
     let store;
+    let fatal;
 
     beforeEach(() => {
+        fatal = jest.fn();
+        logger.mockTypes((typeName) => typeName === 'fatal' && fatal);
+
         localVue = createLocalVue();
         localVue.use(Vuex);
 
@@ -56,13 +60,6 @@ describe('plugin', () => {
     });
 
     describe('errors', () => {
-        let fatal;
-
-        beforeEach(() => {
-            fatal = jest.fn();
-            logger.mockTypes((typeName) => typeName === 'fatal' && fatal);
-        });
-
         it('errors if no store passed', () => {
             localVue.use(plugin);
 
@@ -96,6 +93,19 @@ describe('plugin', () => {
                 classes: [
                     class {},
                 ],
+            });
+
+            expect(fatal).toHaveBeenCalledWith('Passed class does not implement the "toPOJO" instance method');
+        });
+
+        it('errors if class implements toPOJO as a non function', () => {
+            class Foo {}
+            Foo.prototype.toPOJO = 5;
+
+            localVue.use(plugin, {
+                store,
+                app,
+                classes: [Foo],
             });
 
             expect(fatal).toHaveBeenCalledWith('Passed class does not implement the "toPOJO" instance method');
@@ -145,6 +155,10 @@ describe('plugin', () => {
 
         it('adds $nnp to the app context', () => {
             expect(app.$nnp).toEqual(expect.any(Function));
+        });
+
+        it('does not error', () => {
+            expect(fatal).not.toHaveBeenCalled();
         });
 
         describe('in a component', () => {
