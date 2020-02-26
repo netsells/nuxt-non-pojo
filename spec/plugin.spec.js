@@ -51,6 +51,8 @@ describe('plugin', () => {
                 this.store = store;
             }
         };
+
+        localVue.prototype.$store = store;
     });
 
     it('exports a Vue plugin', () => {
@@ -189,6 +191,12 @@ describe('plugin', () => {
 
             it('adds the $nnp mixin', () => {
                 expect(wrapper.vm.$nnp).toEqual(expect.any(Function));
+            });
+
+            it('can save and load a class', () => {
+                const foo = new Foo({ id: 79 });
+                const id = wrapper.vm.$nnp.save(foo);
+                expect(wrapper.vm.$nnp(id)).toEqual(foo);
             });
         });
 
