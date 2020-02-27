@@ -170,6 +170,34 @@ describe('plugin', () => {
         });
     });
 
+    describe('custom $nnp', () => {
+        beforeEach(() => {
+            localVue.use(plugin, {
+                store,
+                app,
+                $nnp: '$m',
+            });
+        });
+
+        it('adds custom $nnp to the app context', () => {
+            expect(app.$m).toEqual(expect.any(Function));
+        });
+
+        describe('in a component', () => {
+            let wrapper;
+
+            beforeEach(() => {
+                wrapper = mount(TestBase, {
+                    localVue,
+                });
+            });
+
+            it('adds the custom $nnp mixin', () => {
+                expect(wrapper.vm.$m).toEqual(expect.any(Function));
+            });
+        });
+    });
+
     describe('when installed', () => {
         beforeEach(() => {
             localVue.use(plugin, {

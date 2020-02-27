@@ -14,6 +14,7 @@ const NuxtNonPojo = {
         store,
         app,
         namespace = 'nuxt-non-pojo',
+        $nnp = '$nnp',
         classes = [],
     } = {}) {
         if (!store) {
@@ -36,9 +37,9 @@ const NuxtNonPojo = {
 
         store.registerModule(namespace, createStore({ constructors }));
 
-        Vue.mixin(createMixin({ constructors, namespace }));
+        Vue.mixin(createMixin({ $nnp, constructors, namespace }));
 
-        Object.defineProperty(app, '$nnp', {
+        Object.defineProperty(app, $nnp, {
             /**
              * Get the $nnp property
              * @returns {Function}

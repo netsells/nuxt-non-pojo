@@ -5,14 +5,14 @@ import nnp from './nnp';
  * @param {Object} options
  * @returns {Object}
  */
-function createMixin({ constructors, namespace }) {
+function createMixin({ $nnp, constructors, namespace }) {
     return {
         computed: {
             /**
              * Get NNP property
              * @returns {Function}
              */
-            $nnp() {
+            [$nnp]() {
                 return nnp({
                     constructors,
                     namespace,
