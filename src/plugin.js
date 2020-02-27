@@ -2,6 +2,7 @@ import createStore from './create-store';
 import createMixin from './create-mixin';
 import logger from './logger';
 import nnp from './nnp';
+import registerConstructor from './register-constructor';
 
 const NuxtNonPojo = {
     /**
@@ -30,22 +31,7 @@ const NuxtNonPojo = {
         const constructors = {};
 
         for (const Klass of classes) {
-            if (typeof Klass !== 'function') {
-                logger.fatal('Passed value is not a class or function');
-                continue;
-            }
-
-            for (const funcName of ['toPOJO', 'toKey']) {
-                if (typeof Klass.prototype[funcName] !== 'function') {
-                    logger.fatal(`Passed class does not implement the "${ funcName }" instance method`);
-                }
-            }
-
-            if (typeof Klass.fromPOJO !== 'function') {
-                logger.fatal('Passed class does not implement the "fromPOJO" static method');
-            }
-
-            constructors[Klass.name] = Klass;
+            registerConstructor(constructors, Klass);
         }
 
         store.registerModule(namespace, createStore({ constructors }));

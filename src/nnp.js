@@ -1,3 +1,5 @@
+import registerConstructor from './register-constructor';
+
 /**
  * Get NNP property
  * @param {Object} options
@@ -37,6 +39,8 @@ function nnp({ store, constructors, namespace }) {
 
         return identity;
     };
+
+    get.register = Klass => registerConstructor(constructors, Klass);
 
     return get;
 }

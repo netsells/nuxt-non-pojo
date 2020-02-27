@@ -43,3 +43,9 @@ this.$nnp.save(foo);
 ```javascript
 this.$nnp(foo)
 ```
+
+### Add a class after plugin registered
+
+```javascript
+this.$nnp.register(Foo);
+```

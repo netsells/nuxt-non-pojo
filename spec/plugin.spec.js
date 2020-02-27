@@ -154,6 +154,20 @@ describe('plugin', () => {
         it('does not error', () => {
             expect(fatal).not.toHaveBeenCalled();
         });
+
+        it('can register new classes', () => {
+            const foo = new Foo({ id: 74 });
+
+            expect(() => {
+                app.$nnp.save(foo)
+            }).toThrow();
+
+            app.$nnp.register(Foo);
+
+            expect(() => {
+                app.$nnp.save(foo)
+            }).not.toThrow();
+        });
     });
 
     describe('when installed', () => {
