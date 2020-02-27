@@ -19,10 +19,11 @@ Add a plugin:
 ```javascript
 // plugins/nuxt-non-pojo.js
 
+import Vue from 'vue';
 import createPlugin from '@netsells/nuxt-non-pojo';
 import { Foo, Bar } from '../models';
 
-export default createPlugin({
+export default createPlugin(Vue, {
     classes: [Foo, Bar],
 });
 ```

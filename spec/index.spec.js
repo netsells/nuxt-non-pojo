@@ -1,27 +1,30 @@
 import { createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
-import Vue from 'vue';
 
 import createPlugin from '../src/index';
 import plugin from '../src/plugin';
 
-Vue.use(Vuex);
-
 class Foo {}
 
 describe('index', () => {
+    let localVue;
+
+    beforeEach(() => {
+        localVue = createLocalVue();
+        localVue.use(Vuex);
+    });
+
     it('exports a function', () => {
         expect(createPlugin).toEqual(expect.any(Function));
     });
 
     describe('createPlugin', () => {
         it('returns a function', () => {
-            expect(createPlugin()).toEqual(expect.any(Function));
+            expect(createPlugin(localVue)).toEqual(expect.any(Function));
         });
 
         describe('Nuxt plugin', () => {
             let nuxtPlugin;
-            let localVue;
             let app;
             let store;
 
@@ -33,18 +36,18 @@ describe('index', () => {
                     }
                 };
 
-                jest.spyOn(Vue, 'use');
+                jest.spyOn(localVue, 'use');
             });
 
             describe('with no options', () => {
                 beforeEach(() => {
-                    nuxtPlugin = createPlugin();
+                    nuxtPlugin = createPlugin(localVue);
                 });
 
                 it('installs the plugin with passed app and store', () => {
                     nuxtPlugin({ store, app });
 
-                    expect(Vue.use).toHaveBeenCalledWith(plugin, {
+                    expect(localVue.use).toHaveBeenCalledWith(plugin, {
                         store,
                         app,
                     });
@@ -53,7 +56,7 @@ describe('index', () => {
 
             describe('with options', () => {
                 beforeEach(() => {
-                    nuxtPlugin = createPlugin({
+                    nuxtPlugin = createPlugin(localVue, {
                         classes: [Foo],
                     });
                 });
@@ -61,7 +64,7 @@ describe('index', () => {
                 it('installs the plugin with passed app, store and options', () => {
                     nuxtPlugin({ store, app });
 
-                    expect(Vue.use).toHaveBeenCalledWith(plugin, {
+                    expect(localVue.use).toHaveBeenCalledWith(plugin, {
                         store,
                         app,
                         classes: [Foo],

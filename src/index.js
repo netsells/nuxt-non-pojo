@@ -1,4 +1,3 @@
-import Vue from 'vue';
 import plugin from './plugin';
 
 /**
@@ -6,7 +5,7 @@ import plugin from './plugin';
  * @param {Object} options
  * @returns {Function}
  */
-function createPlugin(options = {}) {
+function createPlugin(Vue, options = {}) {
     return function({ store, app }) {
         Vue.use(plugin, {
             store,
