@@ -1,6 +1,6 @@
 {
   "name": "@netsells/nuxt-non-pojo",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A way to use non-POJO class instances in NuxtJS",
   "main": "dist/module.js",
   "scripts": {
